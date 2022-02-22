@@ -119,7 +119,7 @@ update_CT_Templates(){
 pct_id(){
     echo
     while :; do
-        read -t 30 -p " 请输入 OpenWrt 容器ID[默认100]：" id || echo
+        read -t 30 -p " 请输入OpenWrt容器ID[默认100]：" id || echo
         id=${id:-100}
         n1=`echo ${id} | sed 's/[0-9]//g'`
         if [[ ! -z $n1 ]]; then
@@ -134,7 +134,7 @@ pct_id(){
 pct_hostname(){
     echo
     while :; do
-        read -t 30 -p " 请输入 OpenWrt 容器名称[默认OpenWrt]：" hostname || echo
+        read -t 30 -p " 请输入OpenWrt容器名称[默认OpenWrt]：" hostname || echo
         hostname=${hostname:-OpenWrt}
         n2=`echo ${hostname} | sed 's/[a-zA-Z0-9]//g' | sed 's/[.-_]//g'`
         if [[ ! -z $n2 ]]; then
@@ -147,7 +147,7 @@ pct_hostname(){
 pct_rootfssize(){
     echo
     while :; do
-        read -t 30 -p " 请输入 OpenWrt 分区大小[GB，默认2]：" rootfssize || echo
+        read -t 30 -p " 请输入OpenWrt分区大小[GB，默认2]：" rootfssize || echo
         rootfssize=${rootfssize:-2}
         n3=`echo ${rootfssize} | sed 's/[0-9]//g'`
         if [[ ! -z $n3 ]]; then
@@ -162,7 +162,7 @@ pct_rootfssize(){
 pct_cores(){
     echo
     while :; do
-        read -t 30 -p " 请输入 OpenWrt CPU核心数[默认4]：" cores || echo
+        read -t 30 -p " 请输入OpenWrt CPU核心数[默认4]：" cores || echo
         cores=${cores:-4}
         n4=`echo ${cores} | sed 's/[0-9]//g'`
         if [[ ! -z $n4 ]]; then
@@ -177,7 +177,7 @@ pct_cores(){
 pct_memory(){
     echo
     while :; do
-        read -t 30 -p " 请输入 OpenWrt 内存大小[MB，默认2048]：" memory || echo
+        read -t 30 -p " 请输入OpenWrt内存大小[MB，默认2048]：" memory || echo
         memory=${memory:-2048}
         n5=`echo ${memory} | sed 's/[0-9]//g'`
         if [[ ! -z $n5 ]]; then
@@ -192,10 +192,10 @@ pct_memory(){
 pct_net(){
     echo
     while :; do
-        read -t 30 -p " 0：网络接口eth0；1：网络接口eth0、eth1。请输入选择[默认0]：" net || echo
+        read -t 30 -p " 请输入OpenWrt网络接口数量[n取1-4，vmbr0为PVE自带，其它需在PVE网络中创建，默认1]：" net || echo
         net=${net:-0}
         case ${net} in
-        0)
+        1)
             cat > ${Creatlxc_Path}/creat_openwrt <<-EOF
 		pct create ${id} \\
 		local:vztmpl/openwrt.rootfs.tar.gz \\
@@ -212,7 +212,7 @@ pct_net(){
 		EOF
             break
         ;;
-        1)
+        2)
             cat > ${Creatlxc_Path}/creat_openwrt <<-EOF
 		pct create ${id} \\
 		local:vztmpl/openwrt.rootfs.tar.gz \\
@@ -225,6 +225,45 @@ pct_net(){
 		--swap 0 \\
 		--net0 bridge=vmbr0,name=eth0 \\
 		--net1 bridge=vmbr1,name=eth1 \\
+		--unprivileged 0 \\
+		--features nesting=1
+		EOF
+            break
+        ;;
+        3)
+            cat > ${Creatlxc_Path}/creat_openwrt <<-EOF
+		pct create ${id} \\
+		local:vztmpl/openwrt.rootfs.tar.gz \\
+		--rootfs local-lvm:${rootfssize} \\
+		--ostype unmanaged \\
+		--hostname ${hostname} \\
+		--arch amd64 \\
+		--cores ${cores} \\
+		--memory ${memory} \\
+		--swap 0 \\
+		--net0 bridge=vmbr0,name=eth0 \\
+		--net1 bridge=vmbr1,name=eth1 \\
+		--net2 bridge=vmbr2,name=eth2 \\
+		--unprivileged 0 \\
+		--features nesting=1
+		EOF
+            break
+        ;;
+        4)
+            cat > ${Creatlxc_Path}/creat_openwrt <<-EOF
+		pct create ${id} \\
+		local:vztmpl/openwrt.rootfs.tar.gz \\
+		--rootfs local-lvm:${rootfssize} \\
+		--ostype unmanaged \\
+		--hostname ${hostname} \\
+		--arch amd64 \\
+		--cores ${cores} \\
+		--memory ${memory} \\
+		--swap 0 \\
+		--net0 bridge=vmbr0,name=eth0 \\
+		--net1 bridge=vmbr1,name=eth1 \\
+		--net2 bridge=vmbr2,name=eth2 \\
+		--net3 bridge=vmbr3,name=eth3 \\
 		--unprivileged 0 \\
 		--features nesting=1
 		EOF
