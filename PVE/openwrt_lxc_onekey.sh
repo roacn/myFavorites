@@ -276,7 +276,7 @@ creat_lxc_openwrt2(){
             esac
         done
     fi
-    [[ -f ${Creatlxc_Path}/creat_openwrt ]] && echo && TIME g "正在创建新容器..." && bash ${Creatlxc_Path}/creat_openwrt && echo && TIME g "lxc容器OpenWrt创建成功！" || TIME g "pct命令不存在或执行错误！"
+    [[ -f ${Creatlxc_Path}/creat_openwrt ]] && echo && TIME g "正在创建新容器..." && bash ${Creatlxc_Path}/creat_openwrt && echo && TIME g "lxc容器OpenWrt创建成功！" || TIME r "pct命令不存在或执行错误！"
 }
 # 清空文件
 clean_files(){
