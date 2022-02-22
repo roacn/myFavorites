@@ -192,10 +192,27 @@ pct_memory(){
 pct_net(){
     echo
     while :; do
-        read -t 30 -p " OpenWrt 是否有eth0与eth1[y/Y或n/N，默认y]：" net || echo
-        net=${net:-y}
+        read -t 30 -p " 0：网络接口eth0；1：网络接口eth0、eth1。请输入选择[默认0]：" net || echo
+        net=${net:-0}
         case ${net} in
-        y|Y)
+        0)
+            cat > ${Creatlxc_Path}/creat_openwrt <<-EOF
+		pct create ${id} \\
+		local:vztmpl/openwrt.rootfs.tar.gz \\
+		--rootfs local-lvm:${rootfssize} \\
+		--ostype unmanaged \\
+		--hostname ${hostname} \\
+		--arch amd64 \\
+		--cores ${cores} \\
+		--memory ${memory} \\
+		--swap 0 \\
+		--net0 bridge=vmbr0,name=eth0 \\
+		--unprivileged 0 \\
+		--features nesting=1
+		EOF
+            break
+        ;;
+        1)
             cat > ${Creatlxc_Path}/creat_openwrt <<-EOF
 		pct create ${id} \\
 		local:vztmpl/openwrt.rootfs.tar.gz \\
@@ -208,23 +225,6 @@ pct_net(){
 		--swap 0 \\
 		--net0 bridge=vmbr0,name=eth0 \\
 		--net1 bridge=vmbr1,name=eth1 \\
-		--unprivileged 0 \\
-		--features nesting=1
-		EOF
-            break
-        ;;
-        n|N)
-            cat > ${Creatlxc_Path}/creat_openwrt <<-EOF
-		pct create ${id} \\
-		local:vztmpl/openwrt.rootfs.tar.gz \\
-		--rootfs local-lvm:${rootfssize} \\
-		--ostype unmanaged \\
-		--hostname ${hostname} \\
-		--arch amd64 \\
-		--cores ${cores} \\
-		--memory ${memory} \\
-		--swap 0 \\
-		--net0 bridge=vmbr0,name=eth0 \\
 		--unprivileged 0 \\
 		--features nesting=1
 		EOF
