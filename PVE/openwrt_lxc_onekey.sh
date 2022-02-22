@@ -189,6 +189,10 @@ pct_memory(){
         fi
     done
 }
+# 网络接口数量多于1时，需根据需求自建接口。
+# 网络接口数量2：vmbr1；
+# 网络接口数量3：vmbr1、vmbr2；
+# 网络接口数量4：vmbr1、vmbr2、vmbr3。
 pct_net(){
     echo
     while :; do
