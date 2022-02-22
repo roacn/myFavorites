@@ -346,7 +346,7 @@ menu(){
         echo
         creat_lxc_openwrt2
         echo
-        TIME y "10s后即将清理残留文件..."
+        TIME y "10s后，将清理残留文件..."
         sleep 10
         clean_files
         echo
