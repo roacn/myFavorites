@@ -193,7 +193,7 @@ pct_net(){
     echo
     while :; do
         read -t 30 -p " 请输入OpenWrt网络接口数量[n取1-4，vmbr0为PVE自带，其它需在PVE网络中创建，默认1]：" net || echo
-        net=${net:-0}
+        net=${net:-1}
         case ${net} in
         1)
             cat > ${Creatlxc_Path}/creat_openwrt <<-EOF
