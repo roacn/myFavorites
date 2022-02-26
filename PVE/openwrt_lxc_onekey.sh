@@ -326,7 +326,7 @@ install_tools(){
     pve_pkgs="curl wget squashfs-tools"
     apt update
     for i in $pve_pkgs; do
-        if [[ $(apt list --installed | grep -o "^${i}\/stable" | wc -l) -ge 1 ]]; then
+        if [[ $(apt list --installed | grep -o "^${i}\/" | wc -l) -ge 1 ]]; then
             TIME g "${i} 已安装"
         else
             TIME r "${i} 未安装"
