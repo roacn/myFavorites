@@ -1,6 +1,6 @@
 #!/bin/bash
-# URL:https://github.com/roacn/build-actions
-# Description:AutoUpdate for Openwrt
+# URL: https://github.com/roacn/build-actions
+# Description: AutoUpdate for Openwrt
 # Author: Ss.
 # Please use the PVE command line to run the shell script.
 # 个人Github地址（自行更改）
@@ -321,6 +321,20 @@ creat_lxc_openwrt2(){
     fi
     [[ -f ${Creatlxc_Path}/creat_openwrt ]] && echo && TIME g "正在创建新容器..." && bash ${Creatlxc_Path}/creat_openwrt && echo && TIME g "lxc容器OpenWrt创建成功！" || TIME r "pct命令不存在或执行错误！"
 }
+# 安装工具
+install_tools(){
+    pve_pkgs="curl wget squashfs-tools"
+    apt update
+    for i in $pve_pkgs; do
+        if [[ $(apt list --installed | grep -o "^${i}\/stable" | wc -l) -ge 1 ]]; then
+            TIME g "$i 已安装"
+        else
+            TIME r "$i 未安装"
+            TIME g "开始安装$i ..."
+            apt install -y ${i}
+        fi
+    done
+}
 # 清空文件
 clean_files(){
     [[ -d ${Openwrt_Path} ]] && rm -rf ${Openwrt_Path}
@@ -334,10 +348,11 @@ menu(){
     TIME y "*      1. 更新CT模板 + 创建LXC容器          *"
     TIME g "*      2. 更新CT模板                        *"
     TIME g "*      3. 创建LXC容器                       *"
+    TIME l "*      4. 安装依赖工具                      *"
     TIME l "*      0. 退出                              *"
     TIME r "*********************************************"
     echo
-    read -t 60 -p " 请输入操作选项[1]、[2]、[3]或[0]：" menuid
+    read -t 60 -p " 请输入操作选项[1]、[2]、[3]、[4]或[0]：" menuid
     menuid=${menuid:-0}
     case ${menuid} in
     1)
@@ -367,6 +382,12 @@ menu(){
         pause
         menu
     ;;
+    4)
+        install_tools
+        echo
+        pause
+        menu
+    ;;
     0)
         clean_files
         clear
@@ -378,5 +399,4 @@ menu(){
     esac
 }
 # 脚本运行！
-cd /tmp
 menu
