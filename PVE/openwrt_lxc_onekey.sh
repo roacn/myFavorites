@@ -325,7 +325,7 @@ creat_lxc_openwrt2(){
 install_tools(){
     pve_pkgs="curl wget squashfs-tools"
     apt update
-    for i in $pve_pkgs; do
+    for i in ${pve_pkgs}; do
         if [[ $(apt list --installed | grep -o "^${i}\/" | wc -l) -ge 1 ]]; then
             TIME g "${i} 已安装"
         else
