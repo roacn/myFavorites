@@ -10,8 +10,6 @@ LXC容器安装OpenWrt
 
 `make meunconfig` ，然后 `targert images` --> `rootfs` 选中[ * ] ` tar.gz`
 
-[x86-64-generic-squashfs-rootfs.img.gz](https://github.com/roacn/build-actions/releases/download/20220202130842/5.10.95-Lede-x86-64-generic-squashfs-rootfs.img.gz)
-
 
 
 #### 安装OpenWrt
