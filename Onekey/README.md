@@ -584,12 +584,12 @@ bash <(curl -s -L https://raw.githubusercontent.com/roacn/backup/main/Onekey/sh/
 - 首先您要有域名跟解析好两个子域名，分别为一个前端（登录网页用），一个后端（服务器IP用）
 - 需要安装宝塔、Nginx和占用443端口，要看清楚跟你现在服务器的有没有冲突
 
-- 运行第一个命令，顺利运行后《[看这里](https://github.com/shidahuilang/SS-SSR-TG-iptables-bt/blob/main/clash/taota01.png)》
+- 运行第一个命令，顺利运行后
 ``` bash
 bash <(curl -fsSL https://raw.githubusercontent.com/roacn/backup/main/Onekey/clash/clashzh1.sh)
 ```
 ---
-- 运行第二个命令，顺利运行后《[看这里](https://github.com/shidahuilang/SS-SSR-TG-iptables-bt/blob/main/clash/clash.md)》
+- 运行第二个命令，顺利运行后
 ``` bash
 bash <(curl -fsSL https://raw.githubusercontent.com/roacn/backup/main/Onekey/clash/clashzh2.sh)
 ```
