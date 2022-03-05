@@ -37,14 +37,14 @@ TIME(){
     [[ $# -lt 2 ]] && echo -e "\e[36m\e[0m ${1}" || echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
     }
 }
-# 更新OpenWrt CT模板
+# 更新OpenWrt CT模板I
 release_chose(){
     releases=`egrep -o "${Firmware_Regex}" ${Download_Path}/Github_Tags | uniq`
     TIME g "Github云端固件"
     echo "${releases}"
     choicesnum=`echo "${releases}" | wc -l`
     while :; do
-        read -t 30 -p " 请选择要下载的固件[n，默认n=1，即倒数第1行]：" release
+        read -t 30 -p " 请选择要下载的固件[n，默认n=1，即倒数第1个最新固件]：" release
         release=${release:-1}
         n0=`echo ${release} | sed 's/[0-9]//g'`
         if [[ ! -z $n0 ]]; then
@@ -58,6 +58,7 @@ release_chose(){
         fi
     done
 }
+# 更新OpenWrt CT模板II
 update_CT_Templates(){
     [[ ! -d ${Download_Path} ]] && mkdir -p ${Download_Path} || rm -rf ${Download_Path}/*
     TIME y "下载OpenWrt固件"
@@ -116,6 +117,7 @@ update_CT_Templates(){
     ctsize=`ls -l /var/lib/vz/template/cache/openwrt.rootfs.tar.gz | awk '{print $5}'`    
     TIME g "CT模板：${ctsize}字节"
 }
+# 容器ID
 pct_id(){
     echo
     while :; do
@@ -131,6 +133,7 @@ pct_id(){
         fi
     done
 }
+# 容器名称
 pct_hostname(){
     echo
     while :; do
@@ -144,6 +147,7 @@ pct_hostname(){
         fi
     done
 }
+# 分区大小
 pct_rootfssize(){
     echo
     while :; do
@@ -159,6 +163,7 @@ pct_rootfssize(){
         fi
     done
 }
+# CPU核心数
 pct_cores(){
     echo
     while :; do
@@ -174,6 +179,7 @@ pct_cores(){
         fi
     done
 }
+# 内存大小
 pct_memory(){
     echo
     while :; do
@@ -183,6 +189,43 @@ pct_memory(){
         if [[ ! -z $n5 ]]; then
             TIME r "输入错误，请重新输入！"
         elif [[ ${memory} == 0 ]]; then
+            TIME r "不能为0，请重新输入！"
+        else
+            break
+        fi
+    done
+}
+# 开机自启
+pct_onboot(){
+    echo
+    while :; do
+        read -t 30 -p " 请输入OpenWrt是否开机自启[0关闭，1开启，默认1]：" onboot || echo
+        onboot=${onboot:-1}
+        case ${onboot} in
+        0)
+            order=2
+            break
+        ;;
+        1)
+            pct_order
+            break
+        ;;
+        *)
+            TIME r "输入错误，请重新输入！"
+        ;;
+        esac
+    done
+}
+# 启动顺序
+pct_order(){
+    echo
+    while :; do
+        read -t 30 -p " 请输入OpenWrt启动顺序[默认2]：" order || echo
+        order=${order:-2}
+        n6=`echo ${order} | sed 's/[0-9]//g'`
+        if [[ ! -z $n6 ]]; then
+            TIME r "输入错误，请重新输入！"
+        elif [[ ${order} == 0 ]]; then
             TIME r "不能为0，请重新输入！"
         else
             break
@@ -212,7 +255,9 @@ pct_net(){
 		--swap 0 \\
 		--net0 bridge=vmbr0,name=eth0 \\
 		--unprivileged 0 \\
-		--features nesting=1
+		--features nesting=1 \\
+		--onboot ${onboot} \\
+		--startup order=${order}
 		EOF
             break
         ;;
@@ -230,7 +275,9 @@ pct_net(){
 		--net0 bridge=vmbr0,name=eth0 \\
 		--net1 bridge=vmbr1,name=eth1 \\
 		--unprivileged 0 \\
-		--features nesting=1
+		--features nesting=1 \\
+		--onboot ${onboot} \\
+		--startup order=${order}
 		EOF
             break
         ;;
@@ -249,7 +296,9 @@ pct_net(){
 		--net1 bridge=vmbr1,name=eth1 \\
 		--net2 bridge=vmbr2,name=eth2 \\
 		--unprivileged 0 \\
-		--features nesting=1
+		--features nesting=1 \\
+		--onboot ${onboot} \\
+		--startup order=${order}
 		EOF
             break
         ;;
@@ -269,7 +318,9 @@ pct_net(){
 		--net2 bridge=vmbr2,name=eth2 \\
 		--net3 bridge=vmbr3,name=eth3 \\
 		--unprivileged 0 \\
-		--features nesting=1
+		--features nesting=1 \\
+		--onboot ${onboot} \\
+		--startup order=${order}
 		EOF
             break
         ;;
@@ -284,7 +335,7 @@ pct_net(){
 	EOF
     fi
 }
-# 创建lxc容器
+# 创建lxc容器I
 creat_lxc_openwrt1(){
     echo
     [[ ! -d ${Creatlxc_Path} ]] && mkdir -p ${Creatlxc_Path} || rm -rf ${Creatlxc_Path}/*
@@ -294,8 +345,10 @@ creat_lxc_openwrt1(){
     pct_rootfssize
     pct_cores
     pct_memory
+    pct_onboot
     pct_net
 }
+# 创建lxc容器II
 creat_lxc_openwrt2(){
     if [[ -f ${Creatlxc_Path}/destroy_openwrt ]]; then
         TIME r "${id}容器已经存在！"
