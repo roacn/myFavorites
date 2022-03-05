@@ -6,9 +6,9 @@ LXC容器安装OpenWrt
 
 ---
 
-需要编译rootfs.img.gz
+需编译rootfs.img.gz
 
-`make meunconfig` ，然后 `targert images` --> `rootfs` 选中[ * ] ` tar.gz`
+`make meunconfig` ，然后 `targert images` --> 选中[ * ] ` GZip images`
 
 
 
