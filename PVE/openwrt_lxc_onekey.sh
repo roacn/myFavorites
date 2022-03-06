@@ -392,7 +392,7 @@ clean_files(){
 # 帮助
 onekey_help() {
     clear
-    cat <<EOF
+    cat <<-EOF
     =============================================================================================
 
     1. 固件编译
@@ -438,7 +438,7 @@ menu(){
     clear
     #[[ ! -d ${Openwrt_Path} ]] && mkdir -p ${Openwrt_Path}
     echo
-    cat <<EOF
+    cat <<-EOF
          OpenWrt自动安装升级脚本
 ┌──────────────────────────────────────────┐
 │    安    1. 更新CT模板 + 创建LXC容器     │
@@ -451,7 +451,7 @@ menu(){
 │          0. 退出                         │
 └──────────────────────────────────────────┘
 EOF
-echo -ne " 请选择: [ ]\b\b"
+    echo -ne " 请选择: [ ]\b\b"
     read -t 60 menuid
     menuid=${menuid:-0}
     case ${menuid} in
