@@ -73,4 +73,5 @@ bash -c  "$(curl -fsSL https://raw.githubusercontent.com/roacn/myFavorites/main/
 
 ![openwrt4.png](https://raw.githubusercontent.com/roacn/myFavorites/main/img/openwrt4.png)
 
+![openwrt5.png](https://raw.githubusercontent.com/roacn/myFavorites/main/img/openwrt5.png)
 
