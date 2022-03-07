@@ -35,6 +35,14 @@ bash -c  "$(curl -fsSL https://raw.githubusercontent.com/roacn/myFavorites/main/
 
 - [x] PVE中直接使用`openwrt`命令运行自动安装更新脚本
 
+国内网络
+
+```shell
+wget https://ghproxy.com/https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt_lxc_onekey.sh -O /usr/sbin/openwrt && chmod +x /usr/sbin/openwrt
+```
+
+国外网络
+
 ```shell
 wget https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt_lxc_onekey.sh -O /usr/sbin/openwrt && chmod +x /usr/sbin/openwrt
 ```
