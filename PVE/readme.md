@@ -28,10 +28,9 @@ bash -c  "$(curl -fsSL https://raw.githubusercontent.com/roacn/myFavorites/main/
 
 
 
-### LXC容器OpenWrt安装
+### LXC容器OpenWrt安装、更新
 
 > 以下请在PVE命令行中运行！
-
 
 
 - [x] PVE中直接使用`openwrt`命令运行自动安装更新脚本
@@ -41,7 +40,6 @@ wget https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt_lxc_on
 ```
 
 即可在PVE命令行中使用`openwrt`运行脚本
-
 
 
 - [x] 直接运行
