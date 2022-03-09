@@ -14,6 +14,7 @@ export Release_Download_URL="https://github.com/${Apidz}/releases/download/${Tag
 export Openwrt_Path="/tmp/openwrt"
 export Download_Path="/tmp/openwrt/download"
 export Creatlxc_Path="/tmp/openwrt/creatlxc"
+export LC_ALL=en_US.UTF-8
 # pause
 pause(){
     read -n 1 -p " Press any key to continue... " input

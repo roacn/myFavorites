@@ -10,6 +10,24 @@ apt update && apt install -y curl
 
 
 
+### 设置中文语言包
+
+命令行
+
+```shell
+dpkg-reconfigure locales → [ * ] en_US.UF8
+```
+
+文件编译
+
+```shell
+/etc/locale.gen去除en_US.UF8前面#
+```
+
+重启PVE即可
+
+
+
 ### PVE一键换源、去订阅等
 
 > 以下请在PVE命令行中运行！
