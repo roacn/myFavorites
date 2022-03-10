@@ -88,7 +88,9 @@ bash -c  "$(curl -fsSL https://raw.githubusercontent.com/roacn/myFavorites/main/
 
 ![openwrt2.png](https://raw.githubusercontent.com/roacn/myFavorites/main/img/openwrt2.png)
 
-![openwrt3.png](https://raw.githubusercontent.com/roacn/myFavorites/main/img/openwrt3.png)
+![openwrt31.png](https://raw.githubusercontent.com/roacn/myFavorites/main/img/openwrt31.png)
+
+![openwrt32.png](https://raw.githubusercontent.com/roacn/myFavorites/main/img/openwrt32.png)
 
 ![openwrt4.png](https://raw.githubusercontent.com/roacn/myFavorites/main/img/openwrt4.png)
 
