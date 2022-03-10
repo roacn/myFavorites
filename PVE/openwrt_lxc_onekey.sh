@@ -14,6 +14,7 @@ export Release_Download_URL="https://github.com/${Apidz}/releases/download/${Tag
 export Openwrt_Path="/tmp/openwrt"
 export Download_Path="/tmp/openwrt/download"
 export Creatlxc_Path="/tmp/openwrt/creatlxc"
+export Backup_Path="/tmp/openwrt/backup"
 export LC_ALL=en_US.UTF-8
 # pause
 pause(){
@@ -348,6 +349,25 @@ creat_lxc_openwrt1(){
 }
 # 创建lxc容器II
 creat_lxc_openwrt2(){
+    while :; do
+        read -t 30 -p " 是否保留OpenWrt配置？[y/Y或n/N，默认y]：" configbackup || echo
+        configbackup=${configbackup:-y}
+        case ${configbackup} in
+        y|Y)
+            echo
+            TIME g "正在备份配置..."
+            config_backup
+            break
+        ;;
+        n|N)
+            break
+        ;;
+        *)
+            TIME r "输入错误，请重新输入！"
+        ;;
+        esac
+    done
+    echo
     if [[ -f ${Creatlxc_Path}/destroy_openwrt ]]; then
         TIME r "${id}容器已经存在！"
         while :; do
@@ -371,6 +391,67 @@ creat_lxc_openwrt2(){
         done
     fi
     [[ -f ${Creatlxc_Path}/creat_openwrt ]] && echo && TIME g "正在创建新容器..." && bash ${Creatlxc_Path}/creat_openwrt && echo && TIME g "lxc容器OpenWrt创建成功！" || TIME r "pct命令不存在或执行错误！"
+    [[ "${configbackup}" == "y" || "${configbackup}" == "Y" ]] && start_openwrt && config_recovery
+}
+# 备份OpenWrt设置
+config_backup(){
+    [[ ! -d ${Backup_Path} ]] && mkdir -p ${Backup_Path} || rm -rf ${Backup_Path}/*
+    pct pull ${id} /etc/sysupgrade.conf ${Backup_Path}/sysupgrade.conf
+    while read line; do
+        linehead=`echo "${line}" | cut -c 1`
+        if [[ ${linehead} == "/" ]]; then
+            back_file=${Backup_Path}${line}
+            echo " 备份OpenWrt：${line}"
+            [[ ! -d ${Backup_Path}`dirname "${line}"` ]] && mkdir -p ${Backup_Path}`dirname "${line}"`
+            pct pull ${id} ${line} ${back_file}
+        fi
+    done < ${Backup_Path}/sysupgrade.conf
+}
+# 启动OpenWrt
+start_openwrt(){
+    echo
+    TIME g "启动OpenWrt..."
+    sleep 5
+    pct start ${id}
+    sleep 30
+    t=0
+    while :; do
+        let t+=1
+        pct exec ${id} -- ping -c 2 www.qq.com
+        if [[ ! $? -eq 0 ]] && [[ ${t} -le 5 ]]; then                
+            echo " OpenWrt启动中... 10s后进行第${t}次尝试！"
+            sleep 10
+        elif [[ ! $? -eq 0 ]] && [[ ${t} -gt 5 ]]; then
+            TIME r "OpenWrt启动失败，请手动启动Openwrt，复制PVE系统${Backup_Path}目录下文件至OpenWrt！"
+            exit 0
+        else
+            TIME g "OpenWrt启动成功！"
+            break
+        fi
+    done
+}
+# 恢复OpenWrt设置
+config_recovery(){
+    echo
+    TIME g "开始恢复配置..."
+    while read line; do
+        linehead=`echo "${line}" | cut -c 1`
+        if [[ ${linehead} == "/" ]]; then
+            rec_file=${Backup_Path}${line}
+            if [[ -f ${rec_file} ]]; then
+                echo " 恢复OpenWrt：${line}"
+                pct push ${id} ${rec_file} ${line}
+                if [[ ! $? -eq 0 ]]; then
+                    echo " 恢复${line}失败！"
+                else
+                    echo " 恢复${line}成功！"
+                fi
+            else
+                echo " ${line}不存在！"
+            fi
+        fi
+    done < ${Backup_Path}/sysupgrade.conf
+    TIME g "恢复配置完成！"
 }
 # 安装工具
 install_tools(){
@@ -420,16 +501,21 @@ onekey_help() {
     `TIME y "3. 网络接口"`
 
         网络接口数量>1时，需自建网络接口。
-        网络接口数量1：系统默认vmbr0；
+        网络接口数量1：无需创建，使用系统默认vmbr0；
         网络接口数量2：vmbr1；
         网络接口数量3：vmbr1、vmbr2；
         网络接口数量4：vmbr1、vmbr2、vmbr3。
 
     ---------------------------------------------------------------------------------------------
 
-    `TIME y "4. 设置是否保存"`
+    `TIME y "4. 设置保存"`
 
-        LXC容器OpenWrt升级前的设置会清空，请自行备份！！！
+        a. 需要保留的配置，请将文件路径存放在OpenWrt系统/etc/sysupgrade.conf文件中，格式如下：
+            ## This file contains files and directories that should
+            ## be preserved during an upgrade.
+            /etc/sysupgrade.conf
+            /etc/config/passwall
+        b. 云编译时，可将sysupgrade.conf文件存放在/build/xxx/files/etc目录下。
 
     =============================================================================================
 EOF
