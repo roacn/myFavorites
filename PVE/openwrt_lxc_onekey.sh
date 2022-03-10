@@ -349,14 +349,32 @@ creat_lxc_openwrt1(){
 }
 # 创建lxc容器II
 creat_lxc_openwrt2(){
+    configrecovery=n
     while :; do
         read -t 30 -p " 是否保留OpenWrt配置？[y/Y或n/N，默认y]：" configbackup || echo
         configbackup=${configbackup:-y}
         case ${configbackup} in
         y|Y)
             echo
-            TIME g "正在备份配置..."
-            config_backup
+            openwrtstatus=`pct status ${id} | awk '{print $2}'`
+            case ${openwrtstatus} in
+            running)
+                TIME g "正在备份配置..."
+                config_backup
+                configrecovery=y
+            ;;
+            stopped)
+                TIME g "OpenWrt处于关机状态，马上为您开机！"
+                start_openwrt
+                TIME g "正在备份配置..."
+                config_backup
+                configrecovery=y
+            ;;
+            *)
+                TIME r "容器不存在，无需备份！"
+                openwrtexist=n
+            ;;
+            esac
             break
         ;;
         n|N)
@@ -391,7 +409,7 @@ creat_lxc_openwrt2(){
         done
     fi
     [[ -f ${Creatlxc_Path}/creat_openwrt ]] && echo && TIME g "正在创建新容器..." && bash ${Creatlxc_Path}/creat_openwrt && echo && TIME g "lxc容器OpenWrt创建成功！" || TIME r "pct命令不存在或执行错误！"
-    [[ "${configbackup}" == "y" || "${configbackup}" == "Y" ]] && start_openwrt && config_recovery
+    [[ ${configrecovery} == y ]] && start_openwrt && config_recovery
 }
 # 备份OpenWrt设置
 config_backup(){
@@ -410,7 +428,7 @@ config_backup(){
 # 启动OpenWrt
 start_openwrt(){
     echo
-    TIME g "启动OpenWrt..."
+    TIME g "启动OpenWrt，请耐心等待约1分钟..."
     sleep 5
     pct start ${id}
     sleep 30
@@ -422,8 +440,10 @@ start_openwrt(){
             echo " OpenWrt启动中... 10s后进行第${t}次尝试！"
             sleep 10
         elif [[ ! $? -eq 0 ]] && [[ ${t} -gt 5 ]]; then
-            TIME r "OpenWrt启动失败，请手动启动Openwrt，复制PVE系统${Backup_Path}目录下文件至OpenWrt！"
-            exit 0
+            TIME r "OpenWrt启动失败！请手动启动后继续！"
+            echo
+            pause
+            t=0
         else
             TIME g "OpenWrt启动成功！"
             break
