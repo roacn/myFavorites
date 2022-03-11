@@ -535,7 +535,7 @@ onekey_help() {
             ## be preserved during an upgrade.
             /etc/config/passwall
             
-           注：在此文件结尾请保留一行空格！
+           注：在此文件结尾请保留一行空白行！
         b. 云编译时，可将sysupgrade.conf文件存放在/build/xxx/files/etc目录下。
 
     =============================================================================================
