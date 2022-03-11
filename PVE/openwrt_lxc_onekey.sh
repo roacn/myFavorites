@@ -533,7 +533,6 @@ onekey_help() {
         a. 需要保留的配置，请将文件路径存放在OpenWrt系统/etc/sysupgrade.conf文件中，格式如下：
             ## This file contains files and directories that should
             ## be preserved during an upgrade.
-            /etc/sysupgrade.conf
             /etc/config/passwall
             
            注：在此文件结尾请保留一行空格！
