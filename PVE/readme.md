@@ -67,6 +67,8 @@ bash -c  "$(curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/roa
 bash -c  "$(curl -fsSL https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/pve_onekey.sh)"
 ```
 
+![pve.png](https://raw.githubusercontent.com/roacn/myFavorites/main/img/pve.png)
+
 
 
 ### Fullconenat安装
