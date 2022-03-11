@@ -65,11 +65,11 @@ update_CT_Templates(){
     [[ ! -d ${Download_Path} ]] && mkdir -p ${Download_Path} || rm -rf ${Download_Path}/*
     TIME y "下载OpenWrt固件"
     TIME g "获取固件API信息..."
-    wget --timeout=5 --tries=1 ${Github_API} -O ${Download_Path}/Github_Tags
+    wget -q --timeout=5 --tries=1 --show-progres ${Github_API} -O ${Download_Path}/Github_Tags
     if [[ $? -ne 0 ]];then
-        wget --timeout=5 --tries=1 https://pd.zwc365.com/${Release_Download_URL}/Github_Tags -O ${Download_Path}/Github_Tags
+        wget -q --timeout=5 --tries=1 --show-progres https://pd.zwc365.com/${Release_Download_URL}/Github_Tags -O ${Download_Path}/Github_Tags
         if [[ $? -ne 0 ]];then
-            wget --timeout=5 --tries=1 https://ghproxy.com/${Release_Download_URL}/Github_Tags -O ${Download_Path}/Github_Tags
+            wget -q --timeout=5 --tries=1 --show-progres https://ghproxy.com/${Release_Download_URL}/Github_Tags -O ${Download_Path}/Github_Tags
             if [[ $? -ne 0 ]];then
                 TIME r "获取固件API信息失败，请检测网络，或者网址是否正确！"
                 echo
@@ -85,11 +85,11 @@ update_CT_Templates(){
     fi
     release_chose
     [ -s ${Download_Path}/DOWNLOAD_URL ] && {
-    wget --timeout=5 --tries=1 --progress=bar ${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
+    wget -q --timeout=5 --tries=1 --show-progres ${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
     if [[ $? -ne 0 ]];then
-        wget --timeout=5 --tries=1 --progress=bar https://pd.zwc365.com/${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
+        wget -q --timeout=5 --tries=1 --show-progres https://pd.zwc365.com/${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
         if [[ $? -ne 0 ]];then
-            wget --timeout=5 --tries=1 --progress=bar https://ghproxy.com/${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
+            wget -q --timeout=5 --tries=1 --show-progres https://ghproxy.com/${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
             if [[ $? -ne 0 ]];then
                 TIME r "获取固件失败，请检测网络，或者网址是否正确！"
                 echo
