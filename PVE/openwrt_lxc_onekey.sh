@@ -372,7 +372,6 @@ creat_lxc_openwrt2(){
             ;;
             *)
                 TIME r "容器不存在，无需备份！"
-                openwrtexist=n
             ;;
             esac
             break
