@@ -25,7 +25,7 @@ pvelocale(){
 # apt国内源
 aptsources() {
   cp -rf /etc/apt/sources.list /etc/apt/backup/sources.list.bak
-  TIME y "请选择您需要的apt国内源"
+  echo " 请选择您需要的apt国内源"
   echo " 1. 清华大学镜像站"
   echo " 2. 中科大镜像站"
   echo " 3. 上海交大镜像站"
@@ -138,7 +138,7 @@ aptsources() {
 # CT模板国内源
 ctsources() {
   cp -rf /usr/share/perl5/PVE/APLInfo.pm /usr/share/perl5/PVE/APLInfo.pm.bak
-  TIME y "请选择您需要的CT模板国内源"
+  echo " 请选择您需要的CT模板国内源"
   echo " 1. 清华大学镜像站"
   echo " 2. 中科大镜像站"
   input="请输入选择"
@@ -210,36 +210,36 @@ clear
 TIME y "提示：PVE原配置文件放入/etc/apt/backup文件夹"
 [[ ! -d /etc/apt/backup ]] && mkdir -p /etc/apt/backup
 echo
-TIME g "※※※※※PVE语言包设置...!※※※※※"
+TIME y "※※※※※PVE语言包设置...!※※※※※"
 pvelocale
 echo
-TIME g "※※※※※更换apt源...!※※※※※"
+TIME y "※※※※※更换apt源...!※※※※※"
 aptsources
 echo
-TIME g "※※※※※更换CT模板源...!※※※※※"
+TIME y "※※※※※更换CT模板源...!※※※※※"
 ctsources
 echo
-TIME g "※※※※※更换使用帮助源...!※※※※※"
+TIME y "※※※※※更换使用帮助源...!※※※※※"
 pvehelp
 echo
-TIME g "※※※※※关闭企业源...!※※※※※"
+TIME y "※※※※※关闭企业源...!※※※※※"
 pveenterprise
 echo
-TIME g "※※※※※移除 Proxmox VE 无有效订阅提示...!※※※※※"
+TIME y "※※※※※移除 Proxmox VE 无有效订阅提示...!※※※※※"
 novalidsub
 echo
-TIME g "※※※※※下载PVE7.0源的密匙!※※※※※"
+TIME y "※※※※※下载PVE7.0源的密匙!※※※※※"
 pvegpg
 echo
-TIME g "※※※※※重新加载服务配置文件、重启web控制台※※※※※"
+TIME y "※※※※※重新加载服务配置文件、重启web控制台※※※※※"
 systemctl daemon-reload && systemctl restart pveproxy.service && TIME g "服务重启完成!"
 sleep 3
 echo
-TIME g "※※※※※更新源、安装常用软件和升级※※※※※"
+TIME y "※※※※※更新源、安装常用软件和升级※※※※※"
 apt-get update && apt-get install -y net-tools curl git
 # apt-get dist-upgrade -y
 TIME y "如需对PVE进行升级，请使用apt-get update -y && apt-get upgrade -y && apt-get dist-upgrade -y"
 sleep 3
 echo
-TIME g "修改完毕！"
+TIME y "修改完毕！"
 echo
