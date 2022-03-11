@@ -436,10 +436,10 @@ start_openwrt(){
     while :; do
         let t+=1
         pct exec ${id} -- ping -c 2 www.qq.com
-        if [[ ! $? -eq 0 ]] && [[ ${t} -le 5 ]]; then                
+        if [[ $? -ne 0 ]] && [[ ${t} -le 5 ]]; then                
             echo " OpenWrt启动中... 10s后进行第${t}次尝试！"
             sleep 10
-        elif [[ ! $? -eq 0 ]] && [[ ${t} -gt 5 ]]; then
+        elif [[ $? -ne 0 ]] && [[ ${t} -gt 5 ]]; then
             TIME r "OpenWrt启动失败！请手动启动后继续！"
             echo
             pause
@@ -461,7 +461,7 @@ config_recovery(){
             if [[ -f ${rec_file} ]]; then
                 echo " 恢复OpenWrt：${line}"
                 pct push ${id} ${rec_file} ${line}
-                if [[ ! $? -eq 0 ]]; then
+                if [[ $? -ne 0 ]]; then
                     echo " 恢复${line}失败！"
                 else
                     echo " 恢复${line}成功！"
