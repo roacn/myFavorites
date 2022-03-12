@@ -146,7 +146,7 @@ vermagic:       5.13.19-3-pve SMP mod_unload modversions
 
 > 以下请在PVE命令行中运行！
 
-
+> 如果PVE网络下载固件比较慢，经常更新可把PVE的网关、DNS指向OpenWrt，懂的都懂！
 
 
 - [x] PVE中直接使用`openwrt`命令运行自动安装更新脚本
