@@ -67,9 +67,9 @@ update_CT_Templates(){
     TIME g "获取固件API信息..."
     wget -q --timeout=5 --tries=2 --show-progress ${Github_API} -O ${Download_Path}/Github_Tags
     if [[ $? -ne 0 ]];then
-        wget -q --timeout=5 --tries=2 --show-progress https://pd.zwc365.com/${Release_Download_URL}/Github_Tags -O ${Download_Path}/Github_Tags
+        wget -q --timeout=5 --tries=2 --show-progress https://ghproxy.com/${Release_Download_URL}/Github_Tags -O ${Download_Path}/Github_Tags
         if [[ $? -ne 0 ]];then
-            wget -q --timeout=5 --tries=2 --show-progress https://ghproxy.com/${Release_Download_URL}/Github_Tags -O ${Download_Path}/Github_Tags
+            wget -q --timeout=5 --tries=2 --show-progress https://pd.zwc365.com/${Release_Download_URL}/Github_Tags -O ${Download_Path}/Github_Tags
             if [[ $? -ne 0 ]];then
                 TIME r "获取固件API信息失败，请检测网络，或者网址是否正确！"
                 echo
@@ -87,9 +87,9 @@ update_CT_Templates(){
     [ -s ${Download_Path}/DOWNLOAD_URL ] && {
     wget -q --timeout=5 --tries=2 --show-progress ${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
     if [[ $? -ne 0 ]];then
-        wget -q --timeout=5 --tries=2 --show-progress https://pd.zwc365.com/${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
+        wget -q --timeout=5 --tries=2 --show-progress https://ghproxy.com/${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
         if [[ $? -ne 0 ]];then
-            wget -q --timeout=5 --tries=2 --show-progress https://ghproxy.com/${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
+            wget -q --timeout=5 --tries=2 --show-progress https://pd.zwc365.com/${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
             if [[ $? -ne 0 ]];then
                 TIME r "获取固件失败，请检测网络，或者网址是否正确！"
                 echo
