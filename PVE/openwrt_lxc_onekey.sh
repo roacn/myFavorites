@@ -98,7 +98,7 @@ update_CT_Templates(){
                 TIME g "固件镜像：通过zwc365.com代理下载成功！"
             fi
         else
-            TIME g "固件镜像：通过ghproxy通过zwc365.com代理下载成功！"
+            TIME g "固件镜像：通过ghproxy.com代理下载成功！"
         fi
     else
         TIME g "固件镜像：通过github.com下载成功！"
