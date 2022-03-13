@@ -196,6 +196,8 @@ completely from the DKMS tree.
 Done.
 ```
 
+通过以上操作`/var/lib/dkms/netfilter-fullconenat-dkms/`目录下的旧版`netfilter-fullconenat-dkms`即可卸载删除。
+
 
 
 ### LXC容器OpenWrt安装、更新
