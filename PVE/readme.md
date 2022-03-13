@@ -142,6 +142,62 @@ vermagic:       5.13.19-3-pve SMP mod_unload modversions
 
 
 
+- [x] 旧版内核卸载
+
+检查已经安装的`netfilter-fullconenat-dkms`
+
+```shell
+root@pve:~# dkms status
+netfilter-fullconenat-dkms, git, 5.10.0-11-amd64, x86_64: installed
+netfilter-fullconenat-dkms, git, 5.10.0-12-amd64, x86_64: installed
+```
+
+
+
+卸载旧版内核`netfilter-fullconenat-dkms`
+
+```shell
+dkms remove netfilter-fullconenat-dkms -v <Version> -k <Kernel>
+```
+
+
+
+```
+root@pve:~# dkms remove netfilter-fullconenat-dkms -v git -k 5.10.0-12-amd64
+
+-------- Uninstall Beginning --------
+Module:  netfilter-fullconenat-dkms
+Version: git
+
+Kernel:  5.10.0-12-amd64 (x86_64)
+-------------------------------------
+
+Status: Before uninstall, this module version was ACTIVE on this kernel.
+
+xt_FULLCONENAT.ko:
+
+ - Uninstallation
+   - Deleting from: /lib/modules/5.10.0-12-amd64/updates/dkms/
+ - Original module
+   - No original module was found for this module on this kernel.
+   - Use the dkms install command to reinstall any previous module version.
+
+depmod...
+
+DKMS: uninstall completed.
+
+------------------------------
+
+Deleting module version: git
+
+completely from the DKMS tree.
+------------------------------
+
+Done.
+```
+
+
+
 ### LXC容器OpenWrt安装、更新
 
 > 以下请在PVE命令行中运行！
