@@ -122,7 +122,7 @@ chmod +s /usr/sbin/hddtemp
 
 
 
-**安装安装nvme-cli**
+**安装nvme-cli**
 
 > 适用于NVME(m.2)等接口硬盘
 
