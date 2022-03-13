@@ -105,8 +105,6 @@ root@pve:~# hddtemp /dev/sda?
 /dev/sda3: GM512: 42°C
 ```
 
-修改hddtemp文件权限
-
 PVE的web服务以用户www-data身份运行，需要修改hddtemp的权限。
 
 查找下hddtemp的位置
