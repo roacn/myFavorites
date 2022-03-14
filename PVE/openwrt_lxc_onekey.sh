@@ -15,6 +15,7 @@ export Openwrt_Path="/tmp/openwrt"
 export Download_Path="/tmp/openwrt/download"
 export Creatlxc_Path="/tmp/openwrt/creatlxc"
 export Backup_Path="/tmp/openwrt/backup"
+export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 # pause
 pause(){
