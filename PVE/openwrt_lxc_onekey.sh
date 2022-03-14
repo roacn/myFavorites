@@ -8,7 +8,7 @@ export Apidz="roacn/build-actions"
 # release的tag名称（自行更改）
 export Tag_Name="AutoUpdate-lxc"
 # 固件搜索正则表达式（自行更改）
-export Firmware_Regex="18\.06.*?rootfs.*?\.img\.gz"
+export Firmware_Regex="[0-9]+\.[0-9]+.*?rootfs.*?\.img\.gz"
 export Github_API="https://api.github.com/repos/${Apidz}/releases/tags/${Tag_Name}"
 export Release_Download_URL="https://github.com/${Apidz}/releases/download/${Tag_Name}"
 export Openwrt_Path="/tmp/openwrt"
