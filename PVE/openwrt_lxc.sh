@@ -551,10 +551,22 @@ EOF
 linux_uname(){
     ver=`uname -a | grep -i "Linux pve"`
     if [[ -z ${ver} ]]; then
+        clear
         echo " `uname -a`"
-        TIME r "脚本需运行在PVE环境下，当前检测非PVE环境！"
-        TIME g "PVE运行如下命令，根据个人情况将xxx改为OpenWrt容器的ID，如100，随后即可在PVE环境运行openwrt来更新"
+        echo
+        TIME r "脚本需运行在PVE环境，检测当前非PVE环境！"
+        echo
+        echo " ────────────────────────────────────────────────────────────────────────────"
+        echo
+        echo " PVE运行："
         TIME g "pct pull xxx /sbin/openwrt_lxc /sbin/openwrt && chmod +x /usr/sbin/openwrt"
+        echo " 注意：将xxx改为个人OpenWrt容器的ID，如100"
+        echo
+        echo " PVE运行："
+        TIME g "openwrt"
+        echo
+        echo " ────────────────────────────────────────────────────────────────────────────"
+        echo
         exit 0
     fi
 }
