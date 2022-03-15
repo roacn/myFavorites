@@ -543,6 +543,16 @@ onekey_help() {
     =============================================================================================
 EOF
 }
+linuxver(){
+    ver=`uname -a | grep -i "Linux pve"`
+    if [[ -z ${ver} ]]; then
+        TIME r "脚本需运行在PVE环境下，当前检测非PVE环境！"
+        echo " `uname -a`"
+        exit 1
+    #else
+        #echo "${ver}"
+    fi
+}
 # 主菜单
 menu(){
     clear
@@ -614,4 +624,5 @@ EOF
     esac
 }
 # 脚本运行！
+linuxver
 menu
