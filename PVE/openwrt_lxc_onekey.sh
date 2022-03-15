@@ -86,9 +86,9 @@ update_CT_Templates(){
     fi
     release_chose
     [ -s ${Download_Path}/DOWNLOAD_URL ] && {
-    wget -q --timeout=5 --tries=2 --show-progress ${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
+    wget -q --timeout=5 --tries=2 --show-progress https://ghproxy.com/${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
     if [[ $? -ne 0 ]];then
-        wget -q --timeout=5 --tries=2 --show-progress https://ghproxy.com/${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
+        wget -q --timeout=5 --tries=2 --show-progress ${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
         if [[ $? -ne 0 ]];then
             wget -q --timeout=5 --tries=2 --show-progress https://pd.zwc365.com/${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
             if [[ $? -ne 0 ]];then
@@ -99,10 +99,10 @@ update_CT_Templates(){
                 TIME g "固件镜像：通过zwc365.com代理下载成功！"
             fi
         else
-            TIME g "固件镜像：通过ghproxy.com代理下载成功！"
+            TIME g "固件镜像：通过github.com下载成功！"
         fi
     else
-        TIME g "固件镜像：通过github.com下载成功！"
+        TIME g "固件镜像：通过ghproxy.com代理下载成功！"
     fi
     }
     imgsize=`ls -l ${Download_Path}/openwrt.rootfs.img.gz | awk '{print $5}'`
@@ -475,6 +475,8 @@ config_recovery(){
 }
 # 安装工具
 install_tools(){
+    echo
+    TIME y "检测脚本依赖..."
     pve_pkgs="curl wget squashfs-tools"
     apt update
     for i in ${pve_pkgs}; do
@@ -547,16 +549,15 @@ menu(){
     #[[ ! -d ${Openwrt_Path} ]] && mkdir -p ${Openwrt_Path}
     echo
     cat <<-EOF
-`TIME y "         OpenWrt自动安装升级脚本"`
+`TIME y "       OpenWrt自动安装升级脚本22.03"`
 ┌──────────────────────────────────────────┐
-│    安    1. 更新CT模板 + 创建LXC容器     │
-│    装    2. 更新CT模板                   │
-│    更    3. 创建LXC容器                  │
-│    新    4. 检测依赖工具                 │
-├──────────────────────────────────────────┤
-│          5. 帮助                         │
-├──────────────────────────────────────────┤
-│          0. 退出                         │
+     安    1. 更新CT模板 + 创建LXC容器
+     装    2. 更新CT模板
+     更    3. 创建LXC容器
+     新    4. 检测依赖工具
+ ──────────────────────────────────────────
+           5. 帮助
+           0. 退出
 └──────────────────────────────────────────┘
 EOF
     echo -ne " 请选择: [ ]\b\b"
