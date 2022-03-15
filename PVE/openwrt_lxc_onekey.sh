@@ -45,6 +45,10 @@ release_chose(){
     releases=`egrep -o "${Firmware_Regex}" ${Download_Path}/Github_Tags | uniq`
     TIME g "Github云端固件"
     echo "${releases}"
+    if [[ -z ${releases} ]]; then
+        TIME r "当前云端固件列表为空，请检查！"
+        exit 0
+    fi
     choicesnum=`echo "${releases}" | wc -l`
     while :; do
         read -t 30 -p " 请选择要下载的固件[n，默认n=1，即倒数第1个最新固件]：" release
