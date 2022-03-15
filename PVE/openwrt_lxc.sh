@@ -553,6 +553,8 @@ linux_uname(){
     if [[ -z ${ver} ]]; then
         TIME r "脚本需运行在PVE环境下，当前检测非PVE环境！"
         echo " `uname -a`"
+        TIME g "PVE运行如下命令，根据个人情况将xxx改为OpenWrt容器的ID，如100，随后即可在PVE环境运行openwrt来更新"
+        TIME g "pct pull xxx /sbin/openwrt_lxc /sbin/openwrt && chmod +x /usr/sbin/openwrt"
         exit 0
     fi
 }
