@@ -40,13 +40,13 @@ dpkg-reconfigure locales → [ * ] en_US.UF8
 国内网络
 
 ```shell
-wget https://ghproxy.com/https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/pve_onekey.sh -O /usr/sbin/pve && chmod +x /usr/sbin/pve
+wget https://ghproxy.com/https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/pve.sh -O /usr/sbin/pve && chmod +x /usr/sbin/pve
 ```
 
 国外网络
 
 ```shell
-wget https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/pve_onekey.sh -O /usr/sbin/pve && chmod +x /usr/sbin/pve
+wget https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/pve.sh -O /usr/sbin/pve && chmod +x /usr/sbin/pve
 ```
 
 即可在PVE命令行中使用`pve`运行脚本
@@ -58,13 +58,13 @@ wget https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/pve_onekey.sh 
 国内网络
 
 ```shell
-bash -c  "$(curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/pve_onekey.sh)"
+bash -c  "$(curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/pve.sh)"
 ```
 
 国外网络
 
 ```shell
-bash -c  "$(curl -fsSL https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/pve_onekey.sh)"
+bash -c  "$(curl -fsSL https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/pve.sh)"
 ```
 
 ![pve.png](https://raw.githubusercontent.com/roacn/myFavorites/main/img/pve.png)
@@ -212,13 +212,13 @@ Done.
 国内网络
 
 ```shell
-wget https://ghproxy.com/https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt_lxc_onekey.sh -O /usr/sbin/openwrt && chmod +x /usr/sbin/openwrt
+wget https://ghproxy.com/https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt_lxc.sh -O /usr/sbin/openwrt && chmod +x /usr/sbin/openwrt
 ```
 
 国外网络
 
 ```shell
-wget https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt_lxc_onekey.sh -O /usr/sbin/openwrt && chmod +x /usr/sbin/openwrt
+wget https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt_lxc.sh -O /usr/sbin/openwrt && chmod +x /usr/sbin/openwrt
 ```
 
 即可在PVE命令行中使用`openwrt`运行脚本
@@ -231,13 +231,13 @@ wget https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt_lxc_on
 国内网络
 
 ```shell
-bash -c  "$(curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt_lxc_onekey.sh)"
+bash -c  "$(curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt_lxc.sh)"
 ```
 
 国外网络
 
 ```shell
-bash -c  "$(curl -fsSL https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt_lxc_onekey.sh)"
+bash -c  "$(curl -fsSL https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt_lxc.sh)"
 ```
 
 ![openwrt11.png](https://raw.githubusercontent.com/roacn/myFavorites/main/img/openwrt11.png)
