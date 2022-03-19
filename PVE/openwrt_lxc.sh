@@ -42,6 +42,7 @@ TIME(){
 }
 # 更新OpenWrt CT模板I
 release_chose(){
+    echo
     releases=`egrep -o "${Firmware_Regex}" ${Download_Path}/Github_Tags | uniq`
     TIME g "Github云端固件"
     echo "${releases}"
@@ -68,10 +69,15 @@ release_chose(){
 # 更新OpenWrt CT模板II
 update_CT_Templates(){
     [[ ! -d ${Download_Path} ]] && mkdir -p ${Download_Path} || rm -rf ${Download_Path}/*
+    echo
     TIME y "下载OpenWrt固件"
+    echo
+    TIME g "正在检测网络..."
+    export Google_Check=$(curl -I -s --connect-timeout 5 google.com -w %{http_code} | tail -n1)
+    [[ "$Google_Check" == 301 ]] && echo " ${Google_Check}：即将直连github.com下载！" || echo " ${Google_Check}：即将通过代理下载！"
+    echo
     TIME g "获取固件API信息..."
-    wget -q --timeout=5 --tries=2 --show-progress ${Github_API} -O ${Download_Path}/Github_Tags
-    if [[ $? -ne 0 ]];then
+    if [ ! "$Google_Check" == 301 ];then
         wget -q --timeout=5 --tries=2 --show-progress https://ghproxy.com/${Release_Download_URL}/Github_Tags -O ${Download_Path}/Github_Tags
         if [[ $? -ne 0 ]];then
             wget -q --timeout=5 --tries=2 --show-progress https://pd.zwc365.com/${Release_Download_URL}/Github_Tags -O ${Download_Path}/Github_Tags
@@ -86,33 +92,49 @@ update_CT_Templates(){
             TIME g "获取固件API信息成功！"
         fi
     else
-        TIME g "获取固件API信息成功！"
+        wget -q --timeout=5 --tries=2 --show-progress ${Github_API} -O ${Download_Path}/Github_Tags
+        if [[ $? -ne 0 ]];then
+            TIME r "获取固件API信息失败，请检测网络，或者网址是否正确！"
+            echo
+            exit 1
+        else
+            TIME g "获取固件API信息成功！"
+        fi
     fi
     release_chose
     [ -s ${Download_Path}/DOWNLOAD_URL ] && {
-    wget -q --timeout=5 --tries=2 --show-progress https://ghproxy.com/${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
-    if [[ $? -ne 0 ]];then
-        wget -q --timeout=5 --tries=2 --show-progress ${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
+    if [ ! "$Google_Check" == 301 ];then
+        echo " 通过https://ghproxy.com/代理下载固件中..."
+        wget -q --timeout=5 --tries=2 --show-progress https://ghproxy.com/${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
         if [[ $? -ne 0 ]];then
+            echo " 通过https://pd.zwc365.com/代理下载固件中..."
             wget -q --timeout=5 --tries=2 --show-progress https://pd.zwc365.com/${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
             if [[ $? -ne 0 ]];then
-                TIME r "获取固件失败，请检测网络，或者网址是否正确！"
+                TIME r "固件下载失败，请检测网络，或者网址是否正确！"
                 echo
                 exit 1
             else
-                TIME g "固件镜像：通过zwc365.com代理下载成功！"
+                TIME g "固件镜像：下载成功！"
             fi
         else
-            TIME g "固件镜像：通过github.com下载成功！"
+            TIME g "固件镜像：下载成功！"
         fi
     else
-        TIME g "固件镜像：通过ghproxy.com代理下载成功！"
+        wget -q --timeout=5 --tries=2 --show-progress ${Release_Download_URL}/$(cat ${Download_Path}/DOWNLOAD_URL) -O ${Download_Path}/openwrt.rootfs.img.gz
+        if [[ $? -ne 0 ]];then
+            TIME r "获取固件失败，请检测网络，或者网址是否正确！"
+            echo
+            exit 1
+        else
+            TIME g "固件镜像：下载成功"
+        fi
     fi
     }
     imgsize=`ls -l ${Download_Path}/openwrt.rootfs.img.gz | awk '{print $5}'`
     TIME g "固件镜像：${imgsize}字节"
     echo
     TIME y "更新OpenWrt CT模板"
+    echo
     TIME g "解包OpenWrt img镜像..."
     cd ${Download_Path} && gzip -d openwrt.rootfs.img.gz && unsquashfs openwrt.rootfs.img
     TIME g "CT模板：上传至/var/lib/vz/template/cache目录..."
