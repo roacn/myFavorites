@@ -212,13 +212,13 @@ Done.
 国内网络
 
 ```shell
-wget https://ghproxy.com/https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt_lxc.sh -O /usr/sbin/openwrt && chmod +x /usr/sbin/openwrt
+wget https://ghproxy.com/https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt.lxc.sh -O /usr/sbin/openwrt && chmod +x /usr/sbin/openwrt
 ```
 
 国外网络
 
 ```shell
-wget https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt_lxc.sh -O /usr/sbin/openwrt && chmod +x /usr/sbin/openwrt
+wget https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt.lxc.sh -O /usr/sbin/openwrt && chmod +x /usr/sbin/openwrt
 ```
 
 即可在PVE命令行中使用`openwrt`运行脚本
@@ -231,13 +231,13 @@ wget https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt_lxc.sh
 国内网络
 
 ```shell
-bash -c  "$(curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt_lxc.sh)"
+bash -c  "$(curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt.lxc.sh)"
 ```
 
 国外网络
 
 ```shell
-bash -c  "$(curl -fsSL https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt_lxc.sh)"
+bash -c  "$(curl -fsSL https://raw.githubusercontent.com/roacn/myFavorites/main/PVE/openwrt.lxc.sh)"
 ```
 
 ![openwrt11.png](https://raw.githubusercontent.com/roacn/myFavorites/main/img/openwrt11.png)
