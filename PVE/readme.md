@@ -22,6 +22,7 @@ dpkg-reconfigure locales → [ * ] en_US.UF8
 
 ```shell
 /etc/locale.gen去除en_US.UF8前面#
+运行locale-gen
 ```
 
 重启PVE即可
