@@ -5,7 +5,7 @@
 使用root用户登录，执行以下命令
 
 ```shell
-apt update && apt install -y curl
+apt update && apt install -y curl wget
 ```
 
 
