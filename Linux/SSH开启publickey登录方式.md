@@ -58,15 +58,9 @@ ssh-copy-id <user>@<host>
 此时，用ssh <user>@<host>就可以不用输入密码直接登录远程服务器了。
 
 ```shell
-root@Debian:/opt/backup# ssh root@192.168.1.3
+root@Debian:~# ssh root@192.168.1.3
 Linux pve 5.15.30-1-pve #1 SMP PVE 5.15.30-1 (Tue, 29 Mar 2022 10:36:02 +0200) x86_64
-
-The programs included with the Debian GNU/Linux system are free software;
-the exact distribution terms for each program are described in the
-individual files in /usr/share/doc/*/copyright.
-
-Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
-permitted by applicable law.
-Last login: Sun Apr 10 22:17:19 2022 from 192.168.1.8
+Last login: Sun Apr 10 23:18:54 2022 from 192.168.1.8
+root@pve:~# 
 ```
 
