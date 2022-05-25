@@ -371,6 +371,23 @@ explicitly configured lxc.apparmor.profile overrides the following settings: fea
 target container '106' updated with 'mp2'
 ```
 
+以上移动在web管理页面操作如下：
+
+- [ ] 1、选中要转移的挂载点，如容器106的mp2挂载点
+- [ ] 2、点击上方“Volume Action”
+- [ ] 3、点击“Reassign Owner”
+- [ ] 4、选择目标容器
+- [ ] 5、修改目标挂载点为正确的挂载点
+- [ ] 6、点击“Reassign Volume”确认！
+
+![转移挂载1](/img/转移挂载1.jpg)
+
+![转移挂载2](/img/转移挂载2.jpg)
+
+![转移挂载3](/img/转移挂载3.jpg)
+
+
+
 例如：
 
 将106的mp2挂载从local-lvm转移至local存储下
@@ -407,20 +424,7 @@ total size is 879,361,570  speedup is 1.14
 
 
 
-以上移动在web管理页面操作如下：
 
-- [ ] 1、选中要转移的挂载点，如容器106的mp2挂载点
-- [ ] 2、点击上方“Volume Action”
-- [ ] 3、点击“Reassign Owner”
-- [ ] 4、选择目标容器
-- [ ] 5、修改目标挂载点为正确的挂载点
-- [ ] 6、点击“Reassign Volume”确认！
-
-![转移挂载1](/img/转移挂载1.jpg)
-
-![转移挂载2](/img/转移挂载2.jpg)
-
-![转移挂载3](/img/转移挂载3.jpg)
 
 
 
