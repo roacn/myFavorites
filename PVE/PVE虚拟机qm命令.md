@@ -124,7 +124,45 @@ qm importdisk <vmid> <source> <storage> [OPTIONS]
 102即虚拟机的VM ID，openwrt.img即为ISO镜像文件，local-lvm即本地存储ID
 ```
 
-#### 五、其它qm命令
+#### 五、转移虚拟机硬盘
+
+qm move-disk \<vmid> \<disk> [\<storage>] [OPTIONS]
+
+将卷移动到不同的存储或不同的 VM。
+
+\<vmid> : \<integer> (1 - N)
+VM 的（唯一）ID。
+
+\<disk>: <efidisk0 | ide0 | ide1 | ...>
+
+虚拟机磁盘
+
+\<storage>: \<string>
+
+目标存储，如local-lvm，local
+
+--format <qcow2 | raw | vmdk>
+
+目标卷格式，默认为raw
+
+--target-disk <efidisk0 | ide0 | ide1 | ...>
+
+目标磁盘
+
+--target-vmid <integer> (1 - N)
+
+目标虚拟机ID
+
+
+
+> 其它，请参照pct命令。
+
+
+
+
+
+#### 六、其它qm命令
+
 ```
    USAGE: qm <COMMAND> [ARGS] [OPTIONS]
    qm agent <vmid> <command>
