@@ -243,6 +243,185 @@ swap: 1024
 
 
 
+**pct mount <vmid>**
+
+在主机上挂载容器的文件系统。这将锁定容器，仅用于紧急维护，因为它将阻止容器上的进一步操作，而不是启动和停止。
+
+<vmid> : <整数> (1 - N)
+VM 的（唯一）ID。
+
+一般在ID为<vmid>的LXC容器出了问题，无法正常启动，需要维护时使用，比如复制该容器内的重要资料。
+
+例如：
+
+ID为116的LXC容器无法启动，需要复制容器内资料出来。
+
+1、挂载
+
+```shell
+pct mount 116	#将116容器挂载至PVE系统
+```
+
+> 注意：pct挂载容器后，该容器处于“锁定”状态，容器将暂时无法启动，后期如有启动需求，需要先解锁容器状态。
+
+然后就可以通过进入该目录操作容器116的文件。
+
+恢复资料后的后续操作
+
+2、解除116容器挂载
+
+```shell
+umount /var/lib/lxc/116/rootfs
+```
+
+> 注意，只有在分区未被程序使用的情况下才能成功用此法卸载，否则会报错，如：
+
+```shell
+root@pve:~# umount /var/lib/lxc/116/rootfs
+umount: /var/lib/lxc/116/rootfs: target is busy.
+```
+
+则可以使用如下命令卸载：
+
+```shell
+umount -l /var/lib/lxc/116/rootfs	#lazy umount正是针对上面错误中的busy而提出的，即可以卸载“busy”的文件系统。
+```
+
+3、解除容器锁定
+
+命令：`pct unlock <vmid>`	#<vmid>替换为实际的容器ID
+
+比如本例为：
+
+```shell
+pct unlock 116
+```
+
+通过以上，
+
+具体操作如下：
+
+```shell
+Linux pve 5.15.35-1-pve #1 SMP PVE 5.15.35-3 (Wed, 11 May 2022 07:57:51 +0200) x86_64
+Last login: Wed May 25 16:33:56 2022 from 192.168.1.8
+root@pve:~# cd /var/lib/lxc/116/rootfs		#查看/var/lib/lxc/116/rootfs目录，未挂载前此目录为空
+root@pve:/var/lib/lxc/116/rootfs# ls
+root@pve:/var/lib/lxc/116/rootfs# cd /root
+root@pve:~# pct mount 116					#将116容器挂载至PVE系统的/var/lib/lxc/116/rootfs目录
+mounted CT 116 in '/var/lib/lxc/116/rootfs'
+root@pve:~# cd /var/lib/lxc/116/rootfs
+root@pve:/var/lib/lxc/116/rootfs# ls		#查看/var/lib/lxc/116/rootfs目录，此目录内为116容器内目录、文件
+bin  boot  dev  etc  home  lib  lib64  lost+found  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  tmp.rej  usr  var
+root@pve:/var/lib/lxc/116/rootfs# cd opt	#进入目标目录
+root@pve:/var/lib/lxc/116/rootfs/opt# ls
+backup  containerd  lost+found  ql  qls  qlx
+root@pve:/var/lib/lxc/116/rootfs/opt# cd ql
+root@pve:/var/lib/lxc/116/rootfs/opt/ql# ls
+config  db  deps  log  raw  repo  scripts
+root@pve:/var/lib/lxc/116/rootfs/opt/ql# cp -r config /tmp	#将116容器内的ql配置文件复制至PVE系统的/tmp目录
+root@pve:/var/lib/lxc/116/rootfs/opt/ql# cd /tmp
+root@pve:/tmp# ls
+config
+root@pve:/tmp# cd config
+root@pve:/tmp/config# ls
+auth.json  config.sh  crontab.list  diy-repo-hw.sh  diy-repo-leafxcy.sh  diy-repo-smiek2221.sh  diy-repo-zero205.sh  env.sh  extra.sh  npm-g.sh  npm.sh  task_after.sh  task_before.sh	#就可以通过WinSCP等工具保存
+root@pve:/tmp# umount -l /var/lib/lxc/116/rootfs			#解除挂载
+root@pve:/tmp# pct lock 116									#解锁116容器（未）
+```
+
+
+
+**pct move-volume <vmid> <volume> [<storage>] [<target-vmid>] [<target-volume>] [OPTIONS]**
+
+将 rootfs-/mp-volume 移动到不同的存储或不同的容器。
+
+<vmid> : <整数> (1 - N)
+VM 的（唯一）ID。
+
+<volume>: <mp0 | mp1 | ... >
+
+被移动的卷，即挂载的mp0、mp1等
+
+<storage>: <string>
+
+目标存储，如local-lvm，local
+
+<target-vmid>: <integer> (1 - N)
+
+目标容器ID
+
+<target-volume>: <mp0 | mp1 | ...>
+
+目录卷，即挂载的mp0、mp1等
+
+
+
+例如：
+
+将116容器的mp0移动至106容器的mp2
+
+使用命令：`pct move-volume 116 mp0 --target-vmid 106 --target-volume mp2`
+
+```shell
+root@pve:/var/lib/lxc/116# pct move-volume 116 mp0 --target-vmid 106 --target-volume mp2
+moving volume 'mp0' from container '116' to '106'
+  Renamed "vm-116-disk-1" to "vm-106-disk-3" in volume group "pve"
+removing volume 'mp0' from container '116' config
+explicitly configured lxc.apparmor.profile overrides the following settings: features:fuse, features:nesting, features:mount
+target container '106' updated with 'mp2'
+```
+
+例如：
+
+将106的mp2挂载从local-lvm转移至local存储下
+
+使用命令：`pct move-volume 106 mp2 --storage local`或`pct move-volume 106 mp2 local`
+
+> 注意：原存储下的挂载仍然存在，处于分离状态，可以登录web管理页面手动删除。
+
+```shell
+root@pve:/var/lib/lxc/116# pct move-volume 106 mp2 --storage local
+Formatting '/var/lib/vz/images/106/vm-106-disk-0.raw', fmt=raw size=8589934592 preallocation=off
+Creating filesystem with 2097152 4k blocks and 524288 inodes
+Filesystem UUID: b771605f-d33e-4db5-8cac-3465131a7298
+Superblock backups stored on blocks: 
+        32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632
+
+Number of files: 80,465 (reg: 64,334, dir: 14,461, link: 1,670)
+Number of created files: 80,463 (reg: 64,334, dir: 14,459, link: 1,670)
+Number of deleted files: 0
+Number of regular files transferred: 48,327
+Total file size: 879,361,570 bytes
+Total transferred file size: 758,022,378 bytes
+Literal data: 758,022,378 bytes
+Matched data: 0 bytes
+File list size: 4,584,713
+File list generation time: 0.005 seconds
+File list transfer time: 0.000 seconds
+Total bytes sent: 767,212,246
+Total bytes received: 3,619,969
+
+sent 767,212,246 bytes  received 3,619,969 bytes  27,046,744.39 bytes/sec
+total size is 879,361,570  speedup is 1.14
+```
+
+
+
+以上移动在web管理页面操作如下：
+
+- [ ] 1、选中要转移的挂载点，如容器106的mp2挂载点
+- [ ] 2、点击上方“Volume Action”
+- [ ] 3、点击“Reassign Owner”
+- [ ] 4、选择目标容器
+- [ ] 5、修改目标挂载点为正确的挂载点
+- [ ] 6、点击“Reassign Volume”确认！
+
+![转移挂载1](/img/转移挂载1.jpg)
+
+![转移挂载2](/img/转移挂载2.jpg)
+
+![转移挂载3](/img/转移挂载3.jpg)
+
 
 
 **pct reboot** \<vmid\> [OPTIONS]
