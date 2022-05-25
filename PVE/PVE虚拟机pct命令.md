@@ -235,22 +235,20 @@ swap: 1024
 
 
 
-
-
 **pct list**
 
 列出当前所有的pct容器
 
 
 
-**pct mount <vmid>**
+**pct mount** \<vmid>
 
 在主机上挂载容器的文件系统。这将锁定容器，仅用于紧急维护，因为它将阻止容器上的进一步操作，而不是启动和停止。
 
-<vmid> : <整数> (1 - N)
+\<vmid> : <整数> (1 - N)
 VM 的（唯一）ID。
 
-一般在ID为<vmid>的LXC容器出了问题，无法正常启动，需要维护时使用，比如复制该容器内的重要资料。
+一般在ID为\<vmid>的LXC容器出了问题，无法正常启动，需要维护时使用，比如复制该容器内的重要资料。
 
 例如：
 
@@ -289,7 +287,7 @@ umount -l /var/lib/lxc/116/rootfs	#lazy umount正是针对上面错误中的busy
 
 3、解除容器锁定
 
-命令：`pct unlock <vmid>`	#<vmid>替换为实际的容器ID
+命令：`pct unlock <vmid>`	#\<vmid>替换为实际的容器ID
 
 比如本例为：
 
@@ -331,26 +329,26 @@ root@pve:/tmp# pct lock 116									#解锁116容器（未）
 
 
 
-**pct move-volume <vmid> <volume> [<storage>] [<target-vmid>] [<target-volume>] [OPTIONS]**
+**pct move-volume \<vmid> \<volume> [\<storage>] [\<target-vmid>] [\<target-volume>] [OPTIONS]**
 
 将 rootfs-/mp-volume 移动到不同的存储或不同的容器。
 
-<vmid> : <整数> (1 - N)
+\<vmid> : <整数> (1 - N)
 VM 的（唯一）ID。
 
-<volume>: <mp0 | mp1 | ... >
+\<volume>: <mp0 | mp1 | ... >
 
 被移动的卷，即挂载的mp0、mp1等
 
-<storage>: <string>
+\<storage>: \<string>
 
 目标存储，如local-lvm，local
 
-<target-vmid>: <integer> (1 - N)
+\<target-vmid>: \<integer> (1 - N)
 
 目标容器ID
 
-<target-volume>: <mp0 | mp1 | ...>
+\<target-volume>: \<mp0 | mp1 | ...>
 
 目录卷，即挂载的mp0、mp1等
 
