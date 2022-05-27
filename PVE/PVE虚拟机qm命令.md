@@ -1,4 +1,4 @@
-### PVE创建OpenWrt虚拟机配置命令
+# PVE创建OpenWrt虚拟机配置命令
 
 
 
@@ -8,7 +8,7 @@ https://192.168.1.3:8006/pve-docs/qm.1.html
 
 
 
-#### 一、创建虚拟机
+## 1、创建虚拟机
 
 ```
 qm create <vmid> [OPTIONS]
@@ -71,6 +71,8 @@ CPU插槽数，默认为1，即1个CPU插槽
 
 
 
+#### 举例：
+
 ```shell
 qm create 102 \
 --name OpenWrt \
@@ -93,7 +95,7 @@ qm create 102 \
 
 
 
-#### 二、删除虚拟机
+## 2、删除虚拟机
 
 ```
 qm destroy <vmid> [OPTIONS]
@@ -103,7 +105,7 @@ Destroy the VM and all used/owned volumes. Removes any VM specific permissions a
 
 
 
-#### 三、设置虚拟机选项
+## 3、设置虚拟机选项
 
 ```
 qm set <vmid> [OPTIONS]
@@ -113,7 +115,7 @@ Set virtual machine options (synchrounous API) - You should consider using the P
 
 
 
-#### 四、导入硬盘镜像
+## 4、导入硬盘镜像
 
 ```
 qm importdisk <vmid> <source> <storage> [OPTIONS]
@@ -124,30 +126,44 @@ qm importdisk <vmid> <source> <storage> [OPTIONS]
 102即虚拟机的VM ID，openwrt.img即为ISO镜像文件，local-lvm即本地存储ID
 ```
 
-#### 五、转移虚拟机硬盘
+
+
+## 5、转移虚拟机硬盘
 
 qm move-disk \<vmid> \<disk> [\<storage>] [OPTIONS]
 
 将卷移动到不同的存储或不同的 VM。
 
+
+
 \<vmid> : \<integer> (1 - N)
 VM 的（唯一）ID。
+
+
 
 \<disk>: <efidisk0 | ide0 | ide1 | ...>
 
 虚拟机磁盘
 
+
+
 \<storage>: \<string>
 
 目标存储，如local-lvm，local
+
+
 
 --format <qcow2 | raw | vmdk>
 
 目标卷格式，默认为raw
 
+
+
 --target-disk <efidisk0 | ide0 | ide1 | ...>
 
 目标磁盘
+
+
 
 --target-vmid <integer> (1 - N)
 
@@ -161,7 +177,7 @@ VM 的（唯一）ID。
 
 
 
-#### 六、其它qm命令
+## 6、其它qm命令
 
 ```
    USAGE: qm <COMMAND> [ARGS] [OPTIONS]
@@ -201,7 +217,12 @@ VM 的（唯一）ID。
    qm help [<cmd>] [OPTIONS]
 ```
 
-举例：设置虚拟系统vm的cpu类型为host
+
+
+#### 举例：
+
+设置虚拟系统vm的cpu类型为host
+
 ```
 qm set <vmid> --cpu cputype=host
 ```

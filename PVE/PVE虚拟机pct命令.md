@@ -1,8 +1,8 @@
+## 1、创建容器
+
 **pct create** \<vmid\> \<ostemplate\> [OPTIONS]
 
 创建或恢复容器
-
-
 
 
 
@@ -12,13 +12,9 @@
 
 
 
-
-
 \<ostemplate\>:\<string\>
 
 容器模板的文件路径，local:vztmpl/openwrt-x86-64-generic-rootfs.tar.gz，local:vztmpl/ 指向/var/lib/vz/template/cache/目录，openwrt-x86-64-generic-rootfs.tar.gz即为容器模板文件。
-
-
 
 
 
@@ -28,13 +24,9 @@
 
 
 
-
-
 --cores \<integer\> (1 - 8192)
 
 CPU核数，默认是全部CPU核数
-
-
 
 
 
@@ -44,13 +36,9 @@ lxc容器名称
 
 
 
-
-
 --memory \<integer\> (16 - N) (*default =* 512)
 
 内存，默认512MB
-
-
 
 
 
@@ -60,21 +48,15 @@ lxc容器名称
 
 
 
-
-
 --net[n] name=\<string\> [,bridge=\<bridge\>] [,firewall=\<1|0\>] [,gw=\<GatewayIPv4\>] [,gw6=\<GatewayIPv6\>] [,hwaddr=\<XX:XX:XX:XX:XX:XX\>] [,ip=\<(IPv4/CIDR|dhcp|manual)\>] [,ip6=\<(IPv6/CIDR|auto|dhcp|manual)\>] [,mtu=\<integer\>] [,rate=\<mbps\>] [,tag=\<integer\>] [,trunks=\<vlanid[;vlanid...]\>] [,type=\<veth\>]
 
 网络设置，设置为--net0 bridge=vmbr0,name=eth0，设置网络0为容器中增加网卡eth0，桥接到主机的vmbr0接口。
 
 
 
-
-
 --onboot \<boolean\> (*default =* 0)
 
 是否开机自启，默认为否
-
-
 
 
 
@@ -86,13 +68,9 @@ lxc容器名称
 
 
 
-
-
 --password \<password\>
 
 设置容器内系统root用户的密码，与图形化操作相同
-
-
 
 
 
@@ -102,13 +80,9 @@ linux类系统根文件系统设置，--rootfs local-lvm:2，即代表使用loca
 
 
 
-
-
 --ssh-public-keys \<filepath\>
 
 设置ssh连接的公钥，一般不需要设置；对于openwrt可在web管理页面设置
-
-
 
 
 
@@ -118,13 +92,9 @@ linux类系统根文件系统设置，--rootfs local-lvm:2，即代表使用loca
 
 
 
-
-
 --tty \<integer\> (0 - 6) (*default =* 2)
 
 tty计数，默认为2，一般不需要设置
-
-
 
 
 
@@ -134,11 +104,7 @@ tty计数，默认为2，一般不需要设置
 
 
 
-
-
-举例：
-
-
+#### 举例：
 
 
 
@@ -159,8 +125,6 @@ local:vztmpl/openwrt.rootfs.tar.gz \
 --unprivileged 1 \
 --features nesting=1
 ```
-
-
 
 
 
@@ -187,13 +151,11 @@ local:vztmpl/debian-11-standard_11.0-1_amd64.tar.gz \
 
 
 
-
+## 2、配置容器
 
 **pct config** \<vmid\> [OPTIONS]
 
 获取容器配置
-
-
 
 
 
@@ -203,9 +165,7 @@ local:vztmpl/debian-11-standard_11.0-1_amd64.tar.gz \
 
 
 
-
-
-举例
+#### 举例
 
 pct config 102即为获取lxc容器ID为102的配置 。
 
@@ -227,7 +187,7 @@ swap: 1024
 
 
 
-
+## 3、执行命令
 
 **pct exec** \<vmid\> [\<extra-args\>]
 
@@ -235,11 +195,15 @@ swap: 1024
 
 
 
+## 4、容器列表
+
 **pct list**
 
 列出当前所有的pct容器
 
 
+
+## 5、容器挂载至PVE目录
 
 **pct mount** \<vmid>
 
@@ -250,9 +214,11 @@ VM 的（唯一）ID。
 
 一般在ID为\<vmid>的LXC容器出了问题，无法正常启动，需要维护时使用，比如复制该容器内的重要资料。
 
-例如：
+#### 举例：
 
 ID为116的LXC容器无法启动，需要复制容器内资料出来。
+
+
 
 1、挂载
 
@@ -265,6 +231,8 @@ pct mount 116	#将116容器挂载至PVE系统
 然后就可以通过进入该目录操作容器116的文件。
 
 恢复资料后的后续操作
+
+
 
 2、解除116容器挂载
 
@@ -284,6 +252,8 @@ umount: /var/lib/lxc/116/rootfs: target is busy.
 ```shell
 umount -l /var/lib/lxc/116/rootfs	#lazy umount正是针对上面错误中的busy而提出的，即可以卸载“busy”的文件系统。
 ```
+
+
 
 3、解除容器锁定
 
@@ -329,24 +299,36 @@ root@pve:/tmp# pct lock 116									#解锁116容器（未）
 
 
 
+## 6、移动卷至不同容器
+
 **pct move-volume \<vmid> \<volume> [\<storage>] [\<target-vmid>] [\<target-volume>] [OPTIONS]**
 
 将 rootfs-/mp-volume 移动到不同的存储或不同的容器。
 
+
+
 \<vmid> : <整数> (1 - N)
 VM 的（唯一）ID。
+
+
 
 \<volume>: <mp0 | mp1 | ... >
 
 被移动的卷，即挂载的mp0、mp1等
 
+
+
 \<storage>: \<string>
 
 目标存储，如local-lvm，local
 
+
+
 \<target-vmid>: \<integer> (1 - N)
 
 目标容器ID
+
+
 
 \<target-volume>: \<mp0 | mp1 | ...>
 
@@ -356,7 +338,7 @@ VM 的（唯一）ID。
 
 
 
-例如：
+#### 举例：
 
 将116容器的mp0移动至106容器的mp2
 
@@ -388,7 +370,7 @@ target container '106' updated with 'mp2'
 
 
 
-例如：
+#### 举例：
 
 将106的mp2挂载从local-lvm转移至local存储下
 
@@ -426,7 +408,7 @@ total size is 879,361,570  speedup is 1.14
 
 
 
-
+## 7、重启容器
 
 **pct reboot** \<vmid\> [OPTIONS]
 
@@ -434,7 +416,7 @@ total size is 879,361,570  speedup is 1.14
 
 
 
-
+## 8、调整挂载点容量
 
 **pct resize** \<vmid\> \<disk\> \<size\> [OPTIONS]
 
@@ -442,7 +424,7 @@ total size is 879,361,570  speedup is 1.14
 
 
 
-
+## 9、容器设置
 
 **pct set** \<vmid\> [OPTIONS]
 
@@ -450,7 +432,7 @@ total size is 879,361,570  speedup is 1.14
 
 
 
-
+## 10、关闭容器
 
 **pct shutdown** \<vmid\> [OPTIONS]
 
@@ -458,7 +440,7 @@ total size is 879,361,570  speedup is 1.14
 
 
 
-
+## 11、启动容器
 
 **pct start** \<vmid\> [OPTIONS]
 
@@ -466,7 +448,7 @@ total size is 879,361,570  speedup is 1.14
 
 
 
-
+## 12、停止容器
 
 **pct stop** \<vmid\> [OPTIONS]
 
