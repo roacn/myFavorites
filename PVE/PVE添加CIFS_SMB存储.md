@@ -40,15 +40,15 @@
 pvesm add cifs <storagename> --server <server> --share <share> [--username <username>] [--password ] [--smbversion <smbversion>]
 ```
 
-<storagename> 存储在PVE的文件名称。
+\<storagename\> 存储在PVE的文件名称。
 
-<server> samba服务端共享的 ip 地址，如局域网的一台电脑的 ip 192.168.1.8
+\<server\> samba服务端共享的 ip 地址，如局域网的一台电脑的 ip 192.168.1.8
 
-<share> samba服务端共享的文件夹名称，如电脑上共享的文件夹 samba
+\<share\> samba服务端共享的文件夹名称，如电脑上共享的文件夹 samba
 
-<username> samba服务端登录的用户名。
+\<username\> samba服务端登录的用户名。
 
-<smbversion>samba版本，如上面方式一添加出现了错误，此处可设置版本为2.1
+\<smbversion\> samba版本，如上面方式一添加出现了错误，此处可设置版本为2.1
 
 
 
