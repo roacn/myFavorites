@@ -18,13 +18,13 @@
 
 打开网页控制台，在数据中心 -> 存储 -> 添加 -> SMB/CIFS，按要求填写即可。
 
-![PVE_CIFS_STORAGE](imgs\PVE_CIFS_STORAGE0.png)
+![PVE_CIFS_STORAGE](imgs/PVE_CIFS_STORAGE0.png)
 
 
 
 但是，如果是最新的PVE8.0，因为samba版本的问题，可能出现如下问题：
 
-![PVE_CIFS_STORAGE](imgs\PVE_CIFS_STORAGE.png)
+![PVE_CIFS_STORAGE](imgs/PVE_CIFS_STORAGE.png)
 
 
 
