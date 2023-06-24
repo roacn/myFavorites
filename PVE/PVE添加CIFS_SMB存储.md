@@ -55,7 +55,7 @@ pvesm add cifs <storagename> --server <server> --share <share> [--username <user
 命令行如下：
 
 ```shell
-pvesm add cifs SMB -server 192.168.1.8 -share samba -username roa -password -smbversion 2.1
+pvesm add cifs SMB --server 192.168.1.8 --share samba --username roa --password --smbversion 2.1
 ```
 
 然后输入登录密码，即可。
