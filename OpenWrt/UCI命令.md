@@ -5,48 +5,7 @@
 UCI是集中式配置信息管理接口(`Unified Configuration Interface`)的缩写，他是OpenWrt引进的一套配置参数管理系统。UCI管理了OpenWrt下最主要的系统配置参数并且提供了简单、容易、标准化的人机交互接口。UCI中已经包含了网络配置、无线配置、系统信息配置等作为基本路由器所需的主要配置参数。同时UCI也可以帮助开发人员快速的建立一套基于OpenWrt的智能路由产品控制界面。
 
 
-
-### 一、UCI命令
-
-```shell
-Usage: uci [<options>] <command> [<arguments>]
-
-Commands:
-        batch
-        export     [<config>]
-        import     [<config>]
-        changes    [<config>]
-        commit     [<config>]
-        add        <config> <section-type>
-        add_list   <config>.<section>.<option>=<string>
-        del_list   <config>.<section>.<option>=<string>
-        show       [<config>[.<section>[.<option>]]]
-        get        <config>.<section>[.<option>]
-        set        <config>.<section>[.<option>]=<value>
-        delete     <config>[.<section>[[.<option>][=]]]
-        rename     <config>.<section>[.<option>]=<name>
-        revert     <config>[.<section>[.<option>]]
-        reorder    <config>.<section>=<position>
-
-Options:
-        -c <path>  set the search path for config files (default: /etc/config)
-        -d <str>   set the delimiter for list values in uci show
-        -f <file>  use <file> as input instead of stdin
-        -m         when importing, merge data into an existing package
-        -n         name unnamed sections on export (default)
-        -N         don't name unnamed sections
-        -p <path>  add a search path for config change files
-        -P <path>  add a search path for config change files and use as default
-        -t <path>  set save path for config change files
-        -q         quiet mode (don't print error messages)
-        -s         force strict mode (stop on parser errors, default)
-        -S         disable strict mode
-        -X         do not use extended syntax on 'show'
-```
-
-
-
-### 二、UCI的文件和流程
+### 一、UCI的文件和流程
 
 UCI的配置文件全部存储在/etc/config目录下。
 
@@ -76,7 +35,7 @@ dhcp         dropbear         firewall         network          samba4          
 
 
 
-### 三、UCI的文件语法
+### 二、UCI的文件语法
 
 ```
 config 'section-type' 'section'
@@ -162,47 +121,53 @@ option example some value with space
 
 
 
-### 四、UCI 命令读写配置
+### 三、UCI 命令
+
+语法格式：
+
+```shell
+Usage:
+        uci [<options>] <command> [<arguments>]
+```
 
 命令:
 
 ```shell
-batch
-export     [<config>]
-import     [<config>]
-changes    [<config>]
-commit     [<config>]
-add        <config> <section-type>
-add_list   <config>.<section>.<option>=<string>
-show       [<config>[.<section>[.<option>]]]
-get        <config>.<section>[.<option>]
-set        <config>.<section>[.<option>]=<value>
-delete     <config>[.<section[.<option>]]
-rename     <config>.<section>[.<option>]=<name>
-revert     <config>[.<section>[.<option>]]
+Commands:
+        batch
+        export     [<config>]
+        import     [<config>]
+        changes    [<config>]
+        commit     [<config>]
+        add        <config> <section-type>
+        add_list   <config>.<section>.<option>=<string>
+        del_list   <config>.<section>.<option>=<string>
+        show       [<config>[.<section>[.<option>]]]
+        get        <config>.<section>[.<option>]
+        set        <config>.<section>[.<option>]=<value>
+        delete     <config>[.<section>[[.<option>][=]]]
+        rename     <config>.<section>[.<option>]=<name>
+        revert     <config>[.<section>[.<option>]]
+        reorder    <config>.<section>=<position>
 ```
 
 参数:
 
 ```shell
--c <path>  set the search path for config files (default: /etc/config)
--d <str>   set the delimiter for list values in uci show
--f <file>  use <file> as input instead of stdin
--m         when importing, merge data into an existing package
--n         name unnamed sections on export (default)
--N         don't name unnamed sections
--p <path>  add a search path for config change files
--P <path>  add a search path for config change files and use as default
--q         quiet mode (don't print error messages)
--s         force strict mode (stop on parser errors, default)
--S         disable strict mode
--X         do not use extended syntax on 'show'
-```
-
-**语法格式**
-
-```
-uci [<options>] <command> [<arguments>]
+Options:
+        -c <path>  set the search path for config files (default: /etc/config)
+        -d <str>   set the delimiter for list values in uci show
+        -f <file>  use <file> as input instead of stdin
+        -m         when importing, merge data into an existing package
+        -n         name unnamed sections on export (default)
+        -N         don't name unnamed sections
+        -p <path>  add a search path for config change files
+        -P <path>  add a search path for config change files and use as default
+        -t <path>  set save path for config change files
+        -q         quiet mode (don't print error messages)
+        -s         force strict mode (stop on parser errors, default)
+        -S         disable strict mode
+        -X         do not use extended syntax on 'show'
 ```
 
 **读写规则**
@@ -211,7 +176,7 @@ uci [<options>] <command> [<arguments>]
 
 
 
-### 五、读取类语法
+### 四、读取类语法
 **取得节点类型**
 
 ```
@@ -264,7 +229,7 @@ uci show -X <config>.<section>.<option>
 
 
 
-### 六、写入类语法
+### 五、写入类语法
 
 
 **增加一个匿名节点到文件**
@@ -537,4 +502,41 @@ uci commit <config>
 > uci commit dropbear
 > ```
 >
+
+
+### 七、批量运行CUI命令
+
+
+如，[12_network-generate-ula](https://github.com/coolsnowwolf/lede/blob/master/package/base-files/files/etc/uci-defaults/12_network-generate-ula)
+
+
+```shell
+[ "$(uci -q get network.globals.ula_prefix)" != "auto" ] && exit 0
+
+r1=$(dd if=/dev/urandom bs=1 count=1 |hexdump -e '1/1 "%02x"')
+r2=$(dd if=/dev/urandom bs=2 count=1 |hexdump -e '2/1 "%02x"')
+r3=$(dd if=/dev/urandom bs=2 count=1 |hexdump -e '2/1 "%02x"')
+
+uci -q batch <<-EOF >/dev/null
+	set network.globals.ula_prefix=fd$r1:$r2:$r3::/48
+	commit network
+EOF
+
+exit 0
+```
+
+如，[dsmboot](https://github.com/coolsnowwolf/lede/blob/master/package/lean/dsmboot/files/dsmboot)
+
+```shell
+#!/bin/sh
+
+uci -q batch <<-EOF >/dev/null
+	set dhcp.@dnsmasq[0].enable_tftp='1'
+	set dhcp.@dnsmasq[0].dhcp_boot='pxelinux.0'
+	set dhcp.@dnsmasq[0].tftp_root='/root'
+	commit dhcp
+EOF
+
+exit 0
+```
 
