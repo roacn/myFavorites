@@ -151,7 +151,7 @@ Commands:
         reorder    <config>.<section>=<position>
 ```
 
-参数:
+参数 <使用较少>:
 
 ```shell
 Options:
@@ -505,6 +505,20 @@ uci commit <config>
 
 
 ### 七、批量运行CUI命令
+
+**格式**
+
+```shell
+uci -q batch <<-EOF >/dev/null
+    <command> [<arguments>]
+    ...
+    <command> [<arguments>]
+EOF
+
+```
+说明：进入uci命令操作模式，与在终端操作的区别是，
+- [x] 操作不需要加uci前缀；
+- [x] 该模式下，只能识别uci命令；
 
 
 如，[12_network-generate-ula](https://github.com/coolsnowwolf/lede/blob/master/package/base-files/files/etc/uci-defaults/12_network-generate-ula)
